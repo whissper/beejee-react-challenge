@@ -1,0 +1,14 @@
+.sav2-top-header {
+	background-color: #eee;
+	color: #bbb;
+	text-shadow: 1px 1px 0px #fff;
+	padding: 10px 10px;
+}
+
+.fa-react {
+	transition: color 1s;
+}
+
+.fa-react:hover {
+    color: #59c5e2
+}
