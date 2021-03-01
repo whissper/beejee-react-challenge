@@ -14,9 +14,7 @@ const Menu = (props) => {
     };
 
     const handleLogout = () => {
-        globalStateStorage.setUserCredentials(
-            { token: null }
-        );
+        localStorage.removeItem('userToken');
 
         globalStateStorage.setInfoBox({
             variant: 'info',

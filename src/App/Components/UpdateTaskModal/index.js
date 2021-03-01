@@ -48,7 +48,7 @@ function UpdateTaskModal(props) {
         const editedTask = {
             text: textInput.current.value.trim(),
             status: statusValue,
-            token: globalStateStorage.userCredentials.token
+            token: localStorage.userToken
         };
 
         clearErrors();

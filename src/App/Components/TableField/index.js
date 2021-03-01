@@ -11,10 +11,11 @@ const TableField = (props) => {
     const { globalStateStorage } = useContext(AppContext);
     const { sort_field, sort_direction } = globalStateStorage.fetchDataParams.searchParams;
 
-    const { tasks } = props;
+    const { token, tasks } = props;
 
     const tableRows = tasks.map((item) => (
         <TableRow key={item.id.toString()}
+            token={token}
             id={item.id.toString()}
             username={item.username}
             email={item.email}
@@ -81,7 +82,7 @@ const TableField = (props) => {
                             <FontAwesomeIcon icon={statusSortItem} size="1x" />
                         </Button>
                     </th>
-                    { globalStateStorage.userCredentials.token &&
+                    { token &&
                         <th className="align-middle">Действия</th>
                     }
                 </tr>

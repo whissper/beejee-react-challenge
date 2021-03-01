@@ -11,6 +11,7 @@ const TableRow = observer((props) => {
     const { globalStateStorage } = useContext(AppContext);
 
     const {
+        token,
         id,
         username,
         email,
@@ -52,7 +53,7 @@ const TableRow = observer((props) => {
             <td style={{ whiteSpace: 'nowrap' }}>{email}</td>
             <td style={{ wordBreak: 'break-all' }}>{text}</td>
             <td>{statusInfo}</td>
-            { globalStateStorage.userCredentials.token &&
+            { token &&
                 <td>
                     <Button variant="success" className="sav2-opt-button" onClick={handleClickUpdate} title="Изменить">
                         <FontAwesomeIcon icon={faPen} size="1x" />

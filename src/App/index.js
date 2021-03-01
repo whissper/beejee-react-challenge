@@ -30,8 +30,24 @@ const App = observer(() => {
         });
     };
 
-    const processQuery = async () => {
+    const processQuery = async (operationType) => {
         let jsonResponse = null;
+        let errorTitle = '';
+
+        switch(operationType) {
+            case 'SELECT':
+                errorTitle = ' Ошибка. Вывод данных невозможен. ';
+                break;
+            case 'INSERT':
+                errorTitle = ' Ошибка. Ввод данных невозможен. ';
+                break;
+            case 'UPDATE':
+                errorTitle = ' Ошибка. Изменение данных невозможно. ';
+                break;
+            case 'LOGIN':
+                errorTitle = ' Ошибка авторизации. ';
+                break;
+        }
 
         globalStateStorage.setPendingRequest(true);
 
@@ -39,11 +55,11 @@ const App = observer(() => {
 
         const response = {
             message: textResponse,
-            methodName: 'App.getTasks()',
+            methodName: 'App.processQuery()',
             representError: (errorInfo) => {
                 globalStateStorage.setInfoBox({
                     variant: 'danger',
-                    text: errorInfo,
+                    text: errorTitle + errorInfo,
                     show: true
                 });
             }
@@ -59,12 +75,12 @@ const App = observer(() => {
     };
 
     const selectTasks = async () => {
-        const response = await processQuery();
+        const response = await processQuery('SELECT');
         globalStateStorage.setTaskList(response.message);
     };
 
     const insertTask = async () => {
-        const response = await processQuery();
+        const response = await processQuery('INSERT');
 
         if (response) {
             globalStateStorage.setInfoBox({
@@ -78,7 +94,7 @@ const App = observer(() => {
     };
 
     const updateTask = async () => {
-        const response = await processQuery();
+        const response = await processQuery('UPDATE');
 
         if (response) {
             globalStateStorage.setInfoBox({
@@ -92,7 +108,7 @@ const App = observer(() => {
     };
 
     const doLogin = async () => {
-        const response = await processQuery();
+        const response = await processQuery('LOGIN');
 
         if (response) {
             globalStateStorage.setInfoBox({
@@ -101,9 +117,7 @@ const App = observer(() => {
                 show: true
             });
 
-            globalStateStorage.setUserCredentials(
-                { token: response.message.token }
-            );
+            localStorage.setItem('userToken', response.message.token);
         }
 
         globalStateStorage.resetFetchDataParams();
@@ -135,7 +149,7 @@ const App = observer(() => {
             <TopHeader />
             <Container className="sav2-main-cont">
                 <div>
-                    <MainMenu token={globalStateStorage.userCredentials.token} />
+                    <MainMenu token={localStorage.userToken} />
                     <br />
                     <InfoBox data={globalStateStorage.infoBox} />
                     <hr />
@@ -150,7 +164,9 @@ const App = observer(() => {
                         onNextClick={handleItemClick}
                         onFirstClick={handleItemClick}
                         onLastClick={handleItemClick} />
-                    <TableField tasks={globalStateStorage.taskList.tasks} />
+                    <TableField 
+                        tasks={globalStateStorage.taskList.tasks}
+                        token={localStorage.userToken} />
                     <hr />
                     <Paginator
                         curPage={globalStateStorage.fetchDataParams.searchParams.page}

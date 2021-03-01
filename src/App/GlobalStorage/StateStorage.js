@@ -28,29 +28,6 @@ export const getStateStorage = () => {
             };
         },
 
-        userCredentials: {
-            token: null
-        },
-
-        setUserCredentials(values) {
-            this.userCredentials = { 
-                ...this.userCredentials, 
-                ...values 
-            };
-        },
-
-        loginData: {
-            username: '',
-            password: '',
-        },
-
-        setLoginData(values) {
-            this.loginData = { 
-                ...this.loginData, 
-                ...values 
-            };
-        },
-
         fetchDataParams: {
             url: REST_SERVICE_URL,
             action: '',
