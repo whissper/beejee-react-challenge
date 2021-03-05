@@ -1,12 +1,13 @@
 import React, { useContext, useRef, useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { AppContext } from 'App/GlobalStorage/StateStorage';
+import { observer } from 'mobx-react-lite';
 
-function InsertTaskModal(props) {
+const InsertTaskModal = observer((props) => {
 
     const { globalStateStorage } = useContext(AppContext);
 
-    const { show } = props;
+    const show = globalStateStorage.insertTaskModal.show;
 
     const usernameInput = useRef(null);
     const emailInput = useRef(null);
@@ -29,7 +30,7 @@ function InsertTaskModal(props) {
 
     const handleAdd = () => {
         let validData = true;
-
+        //eslint-disable-next-line
         const emailExp = /^[^\s()<>@,;:\/]+@\w[\w\.-]+\.[a-z]{2,}$/i;
 
         if (usernameInput.current.value.trim().length === 0) {
@@ -60,11 +61,9 @@ function InsertTaskModal(props) {
         clearErrors();
         globalStateStorage.showInsertTaskModal(false);
 
-        globalStateStorage.setFetchDataParams({
-            ...globalStateStorage.fetchDataParams,
+        globalStateStorage.setPostData({
             action: 'create',
             data: newTask,
-            sendMethod: 'POST'
         });
     };
 
@@ -97,6 +96,6 @@ function InsertTaskModal(props) {
             </Modal.Footer>
         </Modal>
     );
-}
+});
 
 export default InsertTaskModal;

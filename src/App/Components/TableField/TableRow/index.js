@@ -2,11 +2,10 @@ import React, { useContext } from 'react';
 import { Button, Badge } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen } from '@fortawesome/free-solid-svg-icons';
-import { observer } from 'mobx-react-lite';
 import { AppContext } from 'App/GlobalStorage/StateStorage';
 
 
-const TableRow = observer((props) => {
+const TableRow = (props) => {
 
     const { globalStateStorage } = useContext(AppContext);
 
@@ -29,17 +28,17 @@ const TableRow = observer((props) => {
         <Badge className="m-1" variant="danger">не выполнена</Badge>
     </React.Fragment>;
 
-    if (status == 1) {
+    if (status === 1) {
         statusInfo = <React.Fragment>
             <Badge className="m-1" variant="danger">не выполнена</Badge>
             <br />
             <Badge className="m-1" variant="info">отредактирована админом</Badge>
         </React.Fragment>;
-    } else if (status == 10) {
+    } else if (status === 10) {
         statusInfo = <React.Fragment>
             <Badge className="m-1" variant="success">выполнена</Badge>
         </React.Fragment>;
-    } else if (status == 11) {
+    } else if (status === 11) {
         statusInfo = <React.Fragment>
             <Badge className="m-1" variant="success">выполнена</Badge>
             <br />
@@ -62,6 +61,6 @@ const TableRow = observer((props) => {
             }
         </tr>
     );
-});
+};
 
 export default TableRow;

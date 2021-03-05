@@ -1,12 +1,13 @@
 import React, { useContext, useRef, useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { AppContext } from 'App/GlobalStorage/StateStorage';
+import { observer } from 'mobx-react-lite';
 
-function LoginModal(props) {
+const LoginModal = observer((props) => {
 
     const { globalStateStorage } = useContext(AppContext);
 
-    const { show } = props;
+    const show = globalStateStorage.loginModal.show;
 
     const loginInput = useRef(null);
     const passwordInput = useRef(null);
@@ -49,11 +50,9 @@ function LoginModal(props) {
         clearErrors();
         globalStateStorage.showLoginModal(false);
 
-        globalStateStorage.setFetchDataParams({
-            ...globalStateStorage.fetchDataParams,
+        globalStateStorage.setPostData({
             action: 'login',
             data: authData,
-            sendMethod: 'POST'
         });
     };
 
@@ -79,6 +78,6 @@ function LoginModal(props) {
             </Modal.Footer>
         </Modal>
     );
-}
+});
 
 export default LoginModal;

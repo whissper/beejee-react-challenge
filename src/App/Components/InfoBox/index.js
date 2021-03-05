@@ -4,12 +4,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimesCircle } from '@fortawesome/free-regular-svg-icons';
 import { faInfoCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { AppContext } from 'App/GlobalStorage/StateStorage';
+import { observer } from 'mobx-react-lite';
 
-const InfoBox = (props) => {
+const InfoBox = observer((props) => {
 
     const { globalStateStorage } = useContext(AppContext);
 
-    const { variant, text, show } = props.data;
+    const { variant, text, show } = globalStateStorage.infoBox;
 
     const closeInfoBox = () => {
         globalStateStorage.setInfoBox({ show: false });
@@ -42,6 +43,6 @@ const InfoBox = (props) => {
             </Col>
         </Row>
     );
-}
+});
 
 export default InfoBox;

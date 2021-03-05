@@ -4,14 +4,19 @@ import TableRow from './TableRow';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
 import { AppContext } from 'App/GlobalStorage/StateStorage';
+import { observer } from 'mobx-react-lite';
 
 
-const TableField = (props) => {
+const TableField = observer((props) => {
 
     const { globalStateStorage } = useContext(AppContext);
-    const { sort_field, sort_direction } = globalStateStorage.fetchDataParams.searchParams;
 
-    const { token, tasks } = props;
+    const tasks = globalStateStorage.taskList.tasks
+    
+    const token = globalStateStorage.token;
+
+    const sort_field = globalStateStorage.fetchDataParams.searchParams.sort_field;
+    const sort_direction = globalStateStorage.fetchDataParams.searchParams.sort_direction;
 
     const tableRows = tasks.map((item) => (
         <TableRow key={item.id.toString()}
@@ -20,7 +25,7 @@ const TableField = (props) => {
             username={item.username}
             email={item.email}
             text={item.text}
-            status={item.status} />
+            status={parseInt(item.status)} />
     ));
 
     const usernameSortIcon = (sort_field === 'username' ?
@@ -36,13 +41,7 @@ const TableField = (props) => {
         faSort);
 
     const changeSorting = (sortValues) => {
-        globalStateStorage.setFetchDataParams({
-            ...globalStateStorage.fetchDataParams,
-            searchParams: {
-                ...globalStateStorage.fetchDataParams.searchParams,
-                ...sortValues
-            }
-        });
+        globalStateStorage.setSortValues(sortValues);
     };
 
     const handleSort = (e) => {
@@ -92,6 +91,6 @@ const TableField = (props) => {
             </tbody>
         </Table>
     );
-};
+});
 
 export default TableField;

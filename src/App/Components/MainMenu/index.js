@@ -3,9 +3,10 @@ import { Row, Col, InputGroup, FormControl, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { AppContext } from 'App/GlobalStorage/StateStorage';
+import { observer } from 'mobx-react-lite';
 
 
-const Menu = (props) => {
+const Menu = observer((props) => {
 
     const { globalStateStorage } = useContext(AppContext);
 
@@ -14,7 +15,7 @@ const Menu = (props) => {
     };
 
     const handleLogout = () => {
-        localStorage.removeItem('userToken');
+        globalStateStorage.setToken(null);
 
         globalStateStorage.setInfoBox({
             variant: 'info',
@@ -23,7 +24,7 @@ const Menu = (props) => {
         });
     };
 
-    const { token } = props;
+    const token = globalStateStorage.token;
 
     const statusValue = (token ? 'Авторизованный : Администратор' : 'Не авторизован');
 
@@ -52,6 +53,6 @@ const Menu = (props) => {
             </Col>
         </Row>
     );
-}
+});
 
 export default Menu;

@@ -1,12 +1,13 @@
 import React, { useContext, useRef, useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { AppContext } from 'App/GlobalStorage/StateStorage';
+import { observer } from 'mobx-react-lite';
 
-function UpdateTaskModal(props) {
+const UpdateTaskModal = observer((props) => {
 
     const { globalStateStorage } = useContext(AppContext);
 
-    const { show, id, username, email, text, status } = props.data;
+    const { show, id, username, email, text, status } = globalStateStorage.updateTaskModal;
 
     const textInput = useRef(null);
     const statusCheck = useRef(null);
@@ -31,8 +32,8 @@ function UpdateTaskModal(props) {
         }
 
         let statusData = {
-            ready: (status == 10 || status == 11),
-            edited: (status == 1 || status == 11)
+            ready: (status === 10 || status === 11),
+            edited: (status === 1 || status === 11)
         };
 
         if (textInput.current.value.trim() !== textInput.current.defaultValue.trim()) {
@@ -48,7 +49,7 @@ function UpdateTaskModal(props) {
         const editedTask = {
             text: textInput.current.value.trim(),
             status: statusValue,
-            token: localStorage.userToken
+            token: localStorage.getItem('userToken')
         };
 
         clearErrors();
@@ -56,14 +57,12 @@ function UpdateTaskModal(props) {
             { show: false }
         );
 
-        globalStateStorage.setFetchDataParams({
-            ...globalStateStorage.fetchDataParams,
+        globalStateStorage.setPostData({
             action: `edit/${id}`,
-            data: editedTask,
-            sendMethod: 'POST'
+            data: editedTask
         });
     };
-    
+
     return (
         <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
@@ -87,7 +86,7 @@ function UpdateTaskModal(props) {
                 <Form.Group>
                     <Form.Label>Статус задачи:</Form.Label>
                     <Form.Check label="Задание выполнено" type="checkbox"
-                        ref={statusCheck} defaultChecked={status == 10 || status == 11} />
+                        ref={statusCheck} defaultChecked={status === 10 || status === 11} />
                 </Form.Group>
             </Modal.Body>
             <Modal.Footer>
@@ -96,6 +95,6 @@ function UpdateTaskModal(props) {
             </Modal.Footer>
         </Modal>
     );
-}
+});
 
 export default UpdateTaskModal;

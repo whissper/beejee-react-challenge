@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './LightCover.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { AppContext } from 'App/GlobalStorage/StateStorage';
+import { observer } from 'mobx-react-lite';
 
-const LightCover = (props) => {
+const LightCover = observer((props) => {
 
-    const { isLoading } = props;
+    const { globalStateStorage } = useContext(AppContext);
+
+    const isLoading = globalStateStorage.pendingRequest;
 
     const style = {
         visibility: isLoading ? 'visible' : 'hidden',
@@ -20,6 +24,6 @@ const LightCover = (props) => {
             </div>
         </div>
     );
-};
+});
 
 export default LightCover;

@@ -1,18 +1,19 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Pagination } from 'react-bootstrap';
+import { AppContext } from 'App/GlobalStorage/StateStorage';
+import { observer } from 'mobx-react-lite';
 
-const Paginator = (props) => {
+const Paginator = observer((props) => {
     
-    const { 
-        curPage, 
-        perPage, 
-        countRows,
-        onItemClick,
-        onPrevClick,
-        onNextClick,
-        onFirstClick,
-        onLastClick 
-    } = props;
+    const { globalStateStorage } = useContext(AppContext);
+
+    const curPage = globalStateStorage.fetchDataParams.searchParams.page;
+    const perPage = globalStateStorage.taskList.perPage;
+    const countRows = globalStateStorage.taskList.total_task_count;
+
+    const handleItemClick = (pageNumber) => {
+        globalStateStorage.setPage(pageNumber);
+    };
 
     const amoutOfItems = 7;
 
@@ -22,25 +23,25 @@ const Paginator = (props) => {
     
     const itemClick = (e) => {
         const pageValue = e.target.attributes.pagenum.value
-        onItemClick(parseInt(pageValue));
+        handleItemClick(parseInt(pageValue));
     };
 
     const prevClick = () => {
         const pageNumber = (curPage - 1 < 1) ? 1 : curPage - 1;
-        onPrevClick(pageNumber);
+        handleItemClick(pageNumber);
     };
 
     const nextClick = () => {
         const pageNumber = ((curPage + 1) > numberOfPages) ? numberOfPages : curPage + 1;
-        onNextClick(pageNumber);
+        handleItemClick(pageNumber);
     };
     
     const firstClick = () => {
-        onFirstClick(1);
+        handleItemClick(1);
     };
 
     const lastClick = () => {
-        onLastClick(numberOfPages);
+        handleItemClick(numberOfPages);
     };
 
     let items = [];
@@ -121,6 +122,6 @@ const Paginator = (props) => {
             <Pagination.Last onClick={lastClick} disabled={curPage === numberOfPages} />
         </Pagination>
     );
-}
+});
 
 export default Paginator;

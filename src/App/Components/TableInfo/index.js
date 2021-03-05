@@ -1,13 +1,14 @@
-import React, {useContext} from 'react';
+import React, { useContext } from 'react';
 import { InputGroup, FormControl, Button, Row, Col, } from 'react-bootstrap';
 import { AppContext } from 'App/GlobalStorage/StateStorage';
+import { observer } from 'mobx-react-lite';
 
 
-const TableInfo = (props) => {
+const TableInfo = observer((props) => {
 
     const { globalStateStorage } = useContext(AppContext);
 
-    const { countRows } = props;
+    const countRows = globalStateStorage.taskList.total_task_count;
 
     const handleClick = () => {
         globalStateStorage.showInsertTaskModal(true);
@@ -33,6 +34,6 @@ const TableInfo = (props) => {
             </Row>
         </React.Fragment>
     );
-}
+});
 
 export default TableInfo;

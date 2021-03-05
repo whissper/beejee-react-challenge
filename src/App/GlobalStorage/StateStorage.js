@@ -9,6 +9,12 @@ export const getStateStorage = () => {
 
     const stateStorage = makeAutoObservable({
 
+        token: null,
+
+        setToken(value) {
+            this.token = value;
+        },
+
         pendingRequest: false,
 
         setPendingRequest(value) {
@@ -41,22 +47,27 @@ export const getStateStorage = () => {
             }
         },
 
-        setFetchDataParams(values) {
-            this.fetchDataParams = { 
-                ...this.fetchDataParams, 
-                ...values 
-            };
+        setSortValues({sort_field, sort_direction}) {
+            this.fetchDataParams.searchParams.sort_field = sort_field || this.fetchDataParams.searchParams.sort_field;
+            this.fetchDataParams.searchParams.sort_direction = sort_direction || this.fetchDataParams.searchParams.sort_direction;
         },
 
-        resetFetchDataParams() {
-            this.fetchDataParams = { 
-                ...this.fetchDataParams, 
-                action: '',
-                data: {},
-                sendMethod: 'GET'
-            };
+        setPage(value) {
+            this.fetchDataParams.searchParams.page = value;
         },
 
+        setPostData({action, data}) {
+            this.fetchDataParams.action = action || this.fetchDataParams.action;
+            this.fetchDataParams.data = data || this.fetchDataParams.data;
+            this.fetchDataParams.sendMethod = 'POST';
+        },
+
+        resetPostData() {
+            this.fetchDataParams.action = '';
+            this.fetchDataParams.data = {};
+            this.fetchDataParams.sendMethod = 'GET';
+        },
+        
         taskList: {
             total_task_count: 0,
             perPage: 3,
@@ -92,7 +103,7 @@ export const getStateStorage = () => {
             username: '',
             email: '',
             text: '',
-            status: '0'
+            status: 0
         },
 
         showUpdateTaskModal(values) {
